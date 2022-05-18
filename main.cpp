@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
     //======================================================================================
     // Create Bot
     //======================================================================================
-    cBotBase* pBot = new cBotSimple2();
+    cBotBase* pBot = new cAStar();
     pBot->SetCurrent(10, 20, gLevel);
 
     //======================================================================================
@@ -128,7 +128,7 @@ int main(int argc, char* argv[])
             {
                 if (!p_down)
                 {
-                    gDijkstra.Build(*pBot);
+                    gAStar.Build(*pBot);
                     p_down = true;
                 }
             } else { p_down = false; }
