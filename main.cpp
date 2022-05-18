@@ -4,6 +4,7 @@
 //(c) Patrick Dickinson, University of Lincoln, School of Computer Science, 2020
 //======================================================================================
 
+#include <iostream>  // Included to print to console.
 #include "game.h"
 #include "level.h"
 #include "dynamic.h"
@@ -32,8 +33,7 @@ bool gQuit;
 //======================================================================================
 //Main function
 //======================================================================================
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 	gQuit = false;
 
     //======================================================================================
@@ -67,7 +67,7 @@ int main(int argc, char* argv[])
     //======================================================================================
     //Load the map and set target position
     //======================================================================================
-    gLevel.Load("maps/1.txt");
+    gLevel.Load("maps/4.txt");
     gTarget.SetCurrent(30, 20, gLevel);
 
     //======================================================================================
@@ -84,25 +84,26 @@ int main(int argc, char* argv[])
     cBotBase* pBot = new cAStar();
     pBot->SetCurrent(10, 20, gLevel);
 
+    // Console information.
+    std::cout << "Press I for Manhatten Distance and A*.\n" << std::endl;
+    std::cout << "Press O for Diagonal Distance and A*.\n" << std::endl;
+    std::cout << "Press P for Euclidean Distance and A*.\n" << std::endl;
+
     //======================================================================================
     //Main loop
     //======================================================================================
-    while(!gQuit)
-	{   
+    while(!gQuit) {   
         //======================================================================================
         //Poll events for quit
         //======================================================================================
-        while(SDL_PollEvent(&event))
-        {
-            switch (event.type)
-            {
+        while(SDL_PollEvent(&event)) {
+            switch (event.type) {
             case SDL_QUIT:
                 gQuit = true;
                 break;
 
             case SDL_KEYDOWN:
-                switch (event.key.keysym.sym)
-                {
+                switch (event.key.keysym.sym) {
                 case SDLK_ESCAPE:
                 case SDLK_q:
                     gQuit = true;
@@ -123,18 +124,34 @@ int main(int argc, char* argv[])
         if (keystate[SDL_SCANCODE_LEFT]) offsetX -= 1;
         if (keystate[SDL_SCANCODE_RIGHT]) offsetX += 1;
         {
-            static bool p_down = false;
-            if (keystate[SDL_SCANCODE_P])
-            {
-                if (!p_down)
-                {
+            static bool key_down = false;
+            if (keystate[SDL_SCANCODE_I]) {
+                if (!key_down) {
+                    gHeuristic = 1;
                     gAStar.Build(*pBot);
-                    p_down = true;
+                    key_down = true;
                 }
-            } else { p_down = false; }
+            } else { key_down = false; }
+            if (keystate[SDL_SCANCODE_O]) {
+                if (!key_down) {
+                    gHeuristic = 2;
+                    gAStar.Build(*pBot);
+                    key_down = true;
+                }
+            }
+            else { key_down = false; }
+            if (keystate[SDL_SCANCODE_P]) {
+                if (!key_down) {
+                    gHeuristic = 3;
+                    gAStar.Build(*pBot);
+                    key_down = true;
+                }
+            }
+            else { key_down = false; }
+
+
         }
-        if ((offsetX != 0) || (offsetY != 0))
-        {
+        if ((offsetX != 0) || (offsetY != 0)) {
             gTarget.SetNext((gTarget.PositionX() + offsetX), (gTarget.PositionY() + offsetY), gLevel);
         }
 
