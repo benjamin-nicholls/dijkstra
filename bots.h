@@ -11,21 +11,31 @@
 
 
 struct graphNode {
-	bool closed = false;  // Whether or not location is closed.
-	float cost = 1000000.0f;  // Cost value for each location.
-	int linkX = -1;  // Link X coord for each location.
-	int linkY = -1;  // Link Y coord for each location.
-	bool inPath = false;  // Whether or not a location is in path.
-	int heuristic = 1000000;  // Heuristic cost value for each location.
+	bool closed = false;			// Whether or not location is closed.
+	float cost = 1000000.0f;		// Cost value for each location.
+	int linkX = -1;					// Link X coord for each location.
+	int linkY = -1;					// Link Y coord for each location.
+	bool inPath = false;			// Whether or not a location is in path.
+	float heuristic = 1000000.0f;	// Heuristic cost value for each location.
+
+	void reset() {
+		closed = false;
+		cost = 1000000.0f;
+		linkX = -1;
+		linkY = -1;
+		inPath = false;
+		heuristic = 1000000.0f;
+	}
 };
+
 
 struct coordsStruct {
 	int x = 0;
 	int y = 0;
 };
 
-class cBotRandom : public cBotBase
-{
+
+class cBotRandom : public cBotBase {
 	virtual void ChooseNextGridPosition();
 };
 
@@ -48,8 +58,8 @@ public:
 
 class cDijkstra : public cBotBase {
 public:
-	cDijkstra();
-	~cDijkstra();
+	cDijkstra() { completed = false; };
+	~cDijkstra() {};
 	virtual void Build(cBotBase& bot);
 	virtual void ChooseNextGridPosition();
 	//void ShortestPath(cBotBase& bot);
@@ -63,8 +73,8 @@ protected:
 
 class cAStar: public cDijkstra {
 public:
-	cAStar();
-	~cAStar();
+	cAStar() { completed = false; };
+	~cAStar() {};
 	virtual void Build(cBotBase& bot);
 	//std::list<coordsStruct> getPath();
 	virtual void ChooseNextGridPosition();
@@ -75,4 +85,4 @@ public:
 
 extern cDijkstra gDijkstra;
 extern cAStar gAStar;
-
+extern int gHeuristic;
