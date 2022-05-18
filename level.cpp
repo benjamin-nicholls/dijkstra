@@ -88,8 +88,11 @@ void cLevel::Draw(void)
 			*/
 			if (map[i][j] == 0)
 			{
-				if ((gDijkstra.completed) && (gDijkstra.getInPath(i, j) == true)) SDL_RenderCopy(gMainRenderer, tileRouteTexture, NULL, &position);
-				else if ((gDijkstra.completed) && (gDijkstra.getClosed(i, j) == true)) SDL_RenderCopy(gMainRenderer, tileClosedTexture, NULL, &position);
+				//if ((gDijkstra.completed) && (gDijkstra.getInPath(i, j) == true)) SDL_RenderCopy(gMainRenderer, tileRouteTexture, NULL, &position);
+				//else if ((gDijkstra.completed) && (gDijkstra.getClosed(i, j) == true)) SDL_RenderCopy(gMainRenderer, tileClosedTexture, NULL, &position);
+				//else SDL_RenderCopy(gMainRenderer, tileTexture, NULL, &position);
+				if ((gAStar.completed) && (gAStar.getInPath(i, j) == true)) SDL_RenderCopy(gMainRenderer, tileRouteTexture, NULL, &position);
+				else if ((gAStar.completed) && (gAStar.getClosed(i, j) == true)) SDL_RenderCopy(gMainRenderer, tileClosedTexture, NULL, &position);
 				else SDL_RenderCopy(gMainRenderer, tileTexture, NULL, &position);
 			}
 			else SDL_RenderCopy(gMainRenderer, tileBlockedTexture, NULL, &position);
