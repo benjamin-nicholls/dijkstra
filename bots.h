@@ -7,7 +7,7 @@
 //======================================================================================
 
 #include "botbase.h"
-#include <list>
+#include <vector>
 
 
 struct graphNode {
@@ -16,8 +16,13 @@ struct graphNode {
 	int linkX = -1;  // Link X coord for each location.
 	int linkY = -1;  // Link Y coord for each location.
 	bool inPath = false;  // Whether or not a location is in path.
+	int heuristic = 1000000;  // Heuristic cost value for each location.
 };
 
+struct coordsStruct {
+	int x = 0;
+	int y = 0;
+};
 
 class cBotRandom : public cBotBase
 {
@@ -41,19 +46,33 @@ public:
 };
 
 
-class cDijkstra {
-private:
-	graphNode graph[GRIDWIDTH][GRIDHEIGHT];
+class cDijkstra : public cBotBase {
 public:
 	cDijkstra();
 	~cDijkstra();
 	virtual void Build(cBotBase& bot);
+	virtual void ChooseNextGridPosition();
 	//void ShortestPath(cBotBase& bot);
 	bool completed;
 	bool getInPath(int x, int y) const;
 	bool getClosed(int x, int y) const;
+protected:
+	graphNode graph[GRIDWIDTH][GRIDHEIGHT];
+};
+
+
+class cAStar: public cDijkstra {
+public:
+	cAStar();
+	~cAStar();
+	virtual void Build(cBotBase& bot);
+	//std::list<coordsStruct> getPath();
+	virtual void ChooseNextGridPosition();
+	int pathCounter = 0;
+	std::vector<coordsStruct> pathVec;
 };
 
 
 extern cDijkstra gDijkstra;
+extern cAStar gAStar;
 
